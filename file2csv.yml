@@ -1,0 +1,23 @@
+---
+- name: Playbok to install package
+  hosts: node1
+  become: true
+  tasks:
+    - name: Current patch
+      shell: uname -r
+      register: prepatch
+    
+    - name: Checking uptime
+      shell: "uptime | awk '{print $3}' | cut -d, -f1"
+      register: time
+
+    - name: Create file
+      copy:
+        dest: "/tmp/test"
+        content: "{{ time }},{{ ansible_host }},{{ prepatch.stdout }}"
+    - name: Copy File
+      synchronize:
+        src: /tmp/test
+        dest: /tmp/test
+        mode: pull
+
