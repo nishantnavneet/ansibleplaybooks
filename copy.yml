@@ -1,0 +1,14 @@
+---
+  - name: Copy file
+    hosts: node1
+    become: true
+    remote_user: navneet
+    vars:
+      pkg: 
+       - telnet
+       - apache2
+    tasks:
+      - name: Install {{ pkg }} pkg
+        apt:
+          name: "{{ pkg }}"
+          state: absent

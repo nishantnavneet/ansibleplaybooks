@@ -1,0 +1,51 @@
+---
+- name: Playbok to install package
+  hosts: all
+  become: true
+  tasks:
+    - name: Get current patch version
+      shell: uname -r
+      register: prepatch
+
+    - name: upgrade all packages, excluding kernel & foo related packages
+      apt:
+        name: '*'
+        state: latest
+        update_cache: yes
+
+    - name:  Reboot Servers
+      reboot:
+       msg: "Rebooting  Servers"
+       connect_timeout: 5
+       reboot_timeout: 300
+       pre_reboot_delay: 0
+       post_reboot_delay: 30
+       test_command: uptime
+
+    - name: Check if all the systems responding to ssh
+      local_action:
+        module: wait_for
+          host={{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}
+          port=22
+          search_regex=OpenSSH
+          delay=15
+          timeout=300
+         state=started
+
+    - name: Get current patch version
+      shell: "uptime | awk '{print $3}' | cut -d, -f1"
+      register: time
+
+    - name: Get current patch version
+      shell: uname -r
+      register: postpatch
+
+    - mail:
+        host: smtp.gmail.com
+        port: 587
+        username: anamikayadav98ba
+        password: "Anamika@425"
+        to: navneetnishant@hotmail.com
+        subject: Ansible-report
+        body: 'System {{ ansible_hostname }} has been successfully patched. Server prepatch version was 5.4.0-89-generic. Server postpatch version is {{ postpatch.stdout }}. Server uptime is {{ time.stdout }}.'
+      delegate_to: localhost

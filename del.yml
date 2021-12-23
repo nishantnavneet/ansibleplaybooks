@@ -1,0 +1,19 @@
+---
+  - name: Del file
+    hosts: node1
+    tasks:
+      - name: Del Job
+        find:
+          paths: /opt/mule/.mule/
+          patterns: "*.db,*.db.p"
+          file_type: file
+        register: db_files
+
+      - debug:
+#          var: db_files
+          msg: "{{db_files}}"  
+#      - name: Delete found files
+#        file:
+#          path: "{{ item.path }}"
+#          state: absent
+#        with_items: "{{db_files.files }}"

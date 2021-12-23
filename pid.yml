@@ -1,0 +1,16 @@
+---
+- name: Find the status if process
+  hosts: node1
+  vars:
+    process : apache2
+  tasks:
+    - name: Grep PID of {{ process }}
+      shell: "ps  -few |grep -i '{{ process }}'  | grep -v 'grep' | awk '{print $2}' | head -n1"
+      register: pid
+
+    - debug: var=pid
+#        msg :  "{{ pid.stdout_lines }}"
+    
+    - name: Restart {{ process }} if it is not running
+      shell: "systemctl start '{{ process }}'"
+      when: pid.stdout == ""

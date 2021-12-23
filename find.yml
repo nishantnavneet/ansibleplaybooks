@@ -1,0 +1,19 @@
+---
+- name: Search Files
+  hosts: node1
+  tasks:
+    - name: Serach for {{ pattern }}
+      find:
+        recurse: yes
+        path: /var/log/
+        patterns: '*.log'
+        file_type: file
+#        age: 2w
+      register: sear
+
+    - debug: var=item.path
+#    - debug: 
+#        msg: Found given files  {{ item.path }}
+      with_items: "{{ sear.files }}"
+
+    - debug: msg= Found below files {{ item.path }}  

@@ -1,0 +1,40 @@
+---
+  - name: Del file
+    hosts: node1
+    tasks:
+      - name: List mule dirs
+        shell: "ls -ld /opt/mule* | awk '{print $9}'"
+        register: dirs
+
+      - debug:
+#          msg: "{{ dirs }}"
+          var: dirs
+
+      - name: Find files
+        find:
+          paths: "{{ item }}"
+          patterns: '*.db,*db.p'
+          file_type: file
+          recurse: yes
+        with_items: "{{ dirs.stdout_lines }}"
+        register: foundfiles
+
+      - debug: 
+          msg: "{{foundfiles.results}}"
+#          var: foundfiles.results
+        register: out
+
+      - name: Delete found files
+        file:
+          path: "{{ item.path}}" 
+          state: absent
+        with_items: "{{ out }}"
+#        register: final
+      
+#      - name: Delete found files 1
+#        file:
+#          path: "{{ item.path }}" 
+#          state: absent
+#        with_items: "{{ final }}"
+#      - debug: 
+#          msg: "{{f.files}}"

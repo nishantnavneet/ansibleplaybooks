@@ -1,0 +1,17 @@
+---
+- name: Enter multiple lines
+  hosts: all
+#  become: true
+#  remote_user: devops
+  tasks:
+    - name: add multiple lines
+      blockinfile:
+        path: /tmp/hosts
+        block: |
+          {{ item.ip }} {{ item.name }}
+        #marker: "# {mark} Added using ansible {{ item.name }}"
+        create: yes
+        backup: yes
+      loop:
+        - { name: controller, ip: 192.168.64.3 }
+        - { name: node1, ip: 192.168.64.4 }

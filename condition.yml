@@ -1,0 +1,22 @@
+---
+- name : Chck condition
+  hosts: all
+  vars:
+    env :  prod
+  tasks:
+    - name: Check condition 1
+      shell: if firefox > /dev/null; then echo AccessSuccess; else echo AccessFailed;fi
+      register: Accessresult
+
+    - debug:
+        msg: "{{ Accessresult.stdout }} {{ env }}"
+
+    - debug:
+        msg: Install Firefox
+      when: (Accessresult.stdout == 'AccessFailed') and (env is defined and  env == 'prod')
+      
+
+    - debug:
+        msg: Use Firefox
+#      when: (Accessresult.stdout == 'AccessSuccess') and (env is defined and "{{ env }}" == 'prod')
+      when: (Accessresult.stdout == 'AccessSuccess') and (env is defined and  env == 'prod')

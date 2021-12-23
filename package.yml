@@ -1,0 +1,26 @@
+---
+- name: Playbok to install package
+  hosts: all
+  become: true
+  vars:
+    pkg: apache2
+    srv: apache2
+  tasks:
+    - name: Install {{ pkg }} package
+      apt:
+          name: "{{ pkg }}"
+          state: present
+   # - name: Start and Enable {{ srv}}
+   #   service:
+   #     name: "{{ srv }}"
+   #     state: started
+   #     enabled: true
+    - mail:
+        host: smtp.gmail.com
+        port: 587
+        username: anamikayadav98ba
+        password: "Anamika@425"
+        to: navneetnishant@hotmail.com
+        subject: Ansible-report
+        body: 'System {{ ansible_hostname }} has been successfully patched.'
+      delegate_to: localhost
