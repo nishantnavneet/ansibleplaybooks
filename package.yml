@@ -1,6 +1,6 @@
 ---
 - name: Playbok to install package
-  hosts: all
+  hosts: controller
   become: true
   vars:
     pkg: apache2
