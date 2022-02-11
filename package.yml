@@ -15,12 +15,12 @@
    #     name: "{{ srv }}"
    #     state: started
    #     enabled: true
-    - mail:
-        host: smtp.gmail.com
-        port: 587
-        username: anamikayadav98ba
-        password: "Anamika@425"
-        to: navneetnishant@hotmail.com
-        subject: Ansible-report
-        body: 'System {{ ansible_hostname }} has been successfully patched.'
-      delegate_to: localhost
+   # - mail:
+   #     host: smtp.gmail.com
+   #     port: 587
+   #     username: anamikayadav98ba
+   #     password: "Anamika@425"
+   #     to: navneetnishant@hotmail.com
+   #     subject: Ansible-report
+   #     body: 'System {{ ansible_hostname }} has been successfully patched.'
+   #   delegate_to: localhost
