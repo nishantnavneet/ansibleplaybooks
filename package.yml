@@ -3,8 +3,8 @@
   hosts: controller
   become: true
   vars:
-    pkg: apache2
-    srv: apache2
+    pkg: '{package}'
+    srv: '{package}'
   tasks:
     - name: Install {{ pkg }} package
       apt:
