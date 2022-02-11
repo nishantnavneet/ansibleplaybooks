@@ -2,9 +2,9 @@
 - name: Playbok to install package
   hosts: controller
   become: true
-  vars:
-    pkg: "{package}"
-    srv: "{package}"
+#  vars:
+#    pkg: "{package}"
+#    srv: "{package}"
   tasks:
     - name: Install {{ pkg }} package
       apt:
